@@ -1,6 +1,13 @@
 package domain.entities;
 import java.time.LocalDate;
 
+/**
+ * Representa os dados meteorológicos coletados para uma área monitorada em uma data específica.
+ * Armazena informações como temperatura, umidade, velocidade do vento e a área associada.
+ *
+ * <p>Esta classe é usada para encapsular um único registro de medições meteorológicas.</p>
+ *
+ */
 public class WheatherData {
 
     private int id;

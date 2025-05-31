@@ -7,8 +7,15 @@ public class Alert {
     private LocalDate issueDate;
     private MonitoredArea area;
 
+    public Alert(int id, double riskLevel, LocalDate issueDate, MonitoredArea area) {
+        this.id = id;
+        this.riskLevel = riskLevel;
+        this.issueDate = issueDate;
+        this.area = area;
+    }
+
 
     public void generateAlert() {
-        System.out.println("Alert generated for area: " + area.getName() + " with risk level: " + riskLevel);
+        System.out.println("Alerta gerado na área: " + area.getName() + " com risco de nível: " + riskLevel + " na data: " + issueDate);
     }
 }

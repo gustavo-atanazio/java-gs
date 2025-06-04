@@ -11,8 +11,10 @@ public class App {
   private static User user = cadastrarUsuario();
 
   /**
-   * Ponto de entrada da aplicação. Exibe um menu para o usuário interagir com o sistema,
-   * permitindo operações como alterar usuário, cadastrar áreas monitoradas, inserir dados
+   * Ponto de entrada da aplicação. Exibe um menu para o usuário interagir com o
+   * sistema,
+   * permitindo operações como alterar usuário, cadastrar áreas monitoradas,
+   * inserir dados
    * climáticos e de incêndio, monitorar áreas, visualizar dados e gerar alertas.
    * O menu continua sendo exibido até que a opção de sair seja selecionada.
    *
@@ -94,14 +96,17 @@ public class App {
     return cadastrarUsuario(id);
   }
 
-    /**
-   * Permite alterar o usuário ativo, escolhendo um existente ou cadastrando um novo usuário caso não haja usuários cadastrados
+  /**
+   * Permite alterar o usuário ativo, escolhendo um existente ou cadastrando um
+   * novo usuário caso não haja usuários cadastrados
    * ou o ID informado não exista.
    *
    * <p>
    * Se não houver usuários cadastrados, solicita o cadastro de um novo usuário.
-   * Caso contrário, exibe a lista de usuários cadastrados, solicita o ID do usuário a ser alterado,
-   * e retorna o usuário correspondente. Se o ID informado não existir, solicita o cadastro de um novo usuário com o ID informado.
+   * Caso contrário, exibe a lista de usuários cadastrados, solicita o ID do
+   * usuário a ser alterado,
+   * e retorna o usuário correspondente. Se o ID informado não existir, solicita o
+   * cadastro de um novo usuário com o ID informado.
    * </p>
    *
    * @return o usuário alterado ou recém-cadastrado
@@ -123,8 +128,10 @@ public class App {
   }
 
   /**
-   * Solicita ao usuário as informações de uma nova área monitorada (ID, nome, localização e tipo de vegetação),
-   * cria uma instância de {@link MonitoredArea} com esses dados e a adiciona à lista de áreas monitoradas.
+   * Solicita ao usuário as informações de uma nova área monitorada (ID, nome,
+   * localização e tipo de vegetação),
+   * cria uma instância de {@link MonitoredArea} com esses dados e a adiciona à
+   * lista de áreas monitoradas.
    * Exibe uma mensagem de confirmação ao final do cadastro.
    */
   private static void cadastrarArea() {
@@ -141,12 +148,16 @@ public class App {
   }
 
   /**
-   * Solicita ao usuário os dados climáticos (ID, temperatura, umidade, velocidade do vento)
-   * e a seleção de uma área monitorada pelo seu ID. Cria um novo objeto {@link WheatherData}
+   * Solicita ao usuário os dados climáticos (ID, temperatura, umidade, velocidade
+   * do vento)
+   * e a seleção de uma área monitorada pelo seu ID. Cria um novo objeto
+   * {@link WheatherData}
    * com as informações fornecidas e o adiciona à área monitorada selecionada.
-   * Exibe mensagens apropriadas em caso de sucesso ou se a área não for encontrada.
+   * Exibe mensagens apropriadas em caso de sucesso ou se a área não for
+   * encontrada.
    *
-   * Pré-condição: A lista 'areas' deve estar inicializada e conter objetos {@link MonitoredArea}.
+   * Pré-condição: A lista 'areas' deve estar inicializada e conter objetos
+   * {@link MonitoredArea}.
    * Utiliza o scanner para entrada de dados do usuário.
    */
   private static void inserirWeatherData() {
@@ -173,13 +184,18 @@ public class App {
   }
 
   /**
-   * Solicita ao usuário as informações necessárias para criar um novo incêndio (WildFire),
-   * incluindo ID, data, gravidade e área monitorada. Em seguida, adiciona o incêndio à área
-   * selecionada, caso ela exista. Caso a área não seja encontrada, exibe uma mensagem de erro.
+   * Solicita ao usuário as informações necessárias para criar um novo incêndio
+   * (WildFire),
+   * incluindo ID, data, gravidade e área monitorada. Em seguida, adiciona o
+   * incêndio à área
+   * selecionada, caso ela exista. Caso a área não seja encontrada, exibe uma
+   * mensagem de erro.
    *
-   * Pré-condição: A lista de áreas monitoradas ('areas') deve estar inicializada e não nula.
-   * Pós-condição: Um novo objeto WildFire é criado e associado à área monitorada selecionada,
-   *               caso o ID da área seja válido.
+   * Pré-condição: A lista de áreas monitoradas ('areas') deve estar inicializada
+   * e não nula.
+   * Pós-condição: Um novo objeto WildFire é criado e associado à área monitorada
+   * selecionada,
+   * caso o ID da área seja válido.
    */
   private static void inserirWildFire() {
     System.out.print("ID do incêndio: ");
@@ -200,17 +216,21 @@ public class App {
     area.addWildFire(wildFire);
   }
 
-    /**
-   * Monitora uma área selecionada calculando seu nível de risco e gerando um alerta automático se o risco exceder 70%.
+  /**
+   * Monitora uma área selecionada calculando seu nível de risco e gerando um
+   * alerta automático se o risco exceder 70%.
    * <p>
    * O método executa os seguintes passos:
    * <ul>
-   *   <li>Verifica se há áreas cadastradas. Se não houver, notifica o usuário e retorna.</li>
-   *   <li>Pede ao usuário para selecionar uma área pelo ID.</li>
-   *   <li>Busca a área correspondente ao ID informado. Se não encontrar, notifica o usuário e retorna.</li>
-   *   <li>Calcula o nível de risco da área e exibe o valor.</li>
-   *   <li>Se o risco for maior que 70%, gera e dispara um alerta automático para a área.</li>
-   *   <li>Se o risco estiver dentro dos limites normais, notifica o usuário.</li>
+   * <li>Verifica se há áreas cadastradas. Se não houver, notifica o usuário e
+   * retorna.</li>
+   * <li>Pede ao usuário para selecionar uma área pelo ID.</li>
+   * <li>Busca a área correspondente ao ID informado. Se não encontrar, notifica o
+   * usuário e retorna.</li>
+   * <li>Calcula o nível de risco da área e exibe o valor.</li>
+   * <li>Se o risco for maior que 70%, gera e dispara um alerta automático para a
+   * área.</li>
+   * <li>Se o risco estiver dentro dos limites normais, notifica o usuário.</li>
    * </ul>
    */
   private static void monitorarArea() {
@@ -230,33 +250,33 @@ public class App {
     double risco = area.calculateRiskLevel();
     System.out.println("Nível de risco calculado: " + risco + "%");
     if (risco > 70) {
-      AutomaticAlert alert = new AutomaticAlert(
-          Math.toIntExact(System.currentTimeMillis() % Integer.MAX_VALUE),
+      AutomaticAlert alert = area.generateAlert(
           risco,
-          LocalDate.now(),
-          area,
           area.getLatestWeatherData());
-      alert.generateAlert();
+      alert.throwAlert(area);
     } else {
       System.out.println("Risco dentro do normal.");
     }
   }
 
-
-    /**
-   * Exibe informações detalhadas sobre uma área monitorada selecionada pelo usuário.
+  /**
+   * Exibe informações detalhadas sobre uma área monitorada selecionada pelo
+   * usuário.
    * 
-   * O método solicita ao usuário que selecione uma área pelo ID, exibe os dados climáticos
-   * e os relatórios de incêndio associados à área escolhida. Caso não haja dados registrados,
+   * O método solicita ao usuário que selecione uma área pelo ID, exibe os dados
+   * climáticos
+   * e os relatórios de incêndio associados à área escolhida. Caso não haja dados
+   * registrados,
    * mensagens apropriadas são exibidas.
    * 
    * Fluxo:
    * <ul>
-   *   <li>Lista todas as áreas disponíveis e solicita a seleção por ID.</li>
-   *   <li>Verifica se a área existe; caso contrário, informa que não foi encontrada.</li>
-   *   <li>Exibe dados climáticos (se houver) da área selecionada.</li>
-   *   <li>Exibe relatórios de incêndio (se houver) da área selecionada.</li>
-   *   <li>Informa caso não existam dados climáticos ou incêndios registrados.</li>
+   * <li>Lista todas as áreas disponíveis e solicita a seleção por ID.</li>
+   * <li>Verifica se a área existe; caso contrário, informa que não foi
+   * encontrada.</li>
+   * <li>Exibe dados climáticos (se houver) da área selecionada.</li>
+   * <li>Exibe relatórios de incêndio (se houver) da área selecionada.</li>
+   * <li>Informa caso não existam dados climáticos ou incêndios registrados.</li>
    * </ul>
    */
   private static void visualizarArea() {
@@ -298,23 +318,28 @@ public class App {
   /**
    * Gera um alerta manual para uma área monitorada pelo usuário.
    * <p>
-   * O método exibe as áreas monitoradas cadastradas pelo usuário, solicita a seleção de uma área pelo ID,
-   * o nível de risco (%) e uma descrição para o alerta. Em seguida, cria e gera um alerta manual para a área selecionada.
+   * O método exibe as áreas monitoradas cadastradas pelo usuário, solicita a
+   * seleção de uma área pelo ID,
+   * o nível de risco (%) e uma descrição para o alerta. Em seguida, cria e gera
+   * um alerta manual para a área selecionada.
    * </p>
    * <ul>
-   *   <li>Se não houver áreas monitoradas cadastradas, exibe uma mensagem e retorna.</li>
-   *   <li>Se o ID informado não corresponder a nenhuma área, exibe uma mensagem e retorna.</li>
+   * <li>Se não houver áreas monitoradas cadastradas, exibe uma mensagem e
+   * retorna.</li>
+   * <li>Se o ID informado não corresponder a nenhuma área, exibe uma mensagem e
+   * retorna.</li>
    * </ul>
    * 
    * Pré-condições:
    * <ul>
-   *   <li>O usuário deve possuir pelo menos uma área monitorada cadastrada.</li>
-   *   <li>O scanner deve estar inicializado.</li>
+   * <li>O usuário deve possuir pelo menos uma área monitorada cadastrada.</li>
+   * <li>O scanner deve estar inicializado.</li>
    * </ul>
    * 
    * Pós-condições:
    * <ul>
-   *   <li>Um alerta manual é gerado para a área selecionada, caso todas as informações sejam válidas.</li>
+   * <li>Um alerta manual é gerado para a área selecionada, caso todas as
+   * informações sejam válidas.</li>
    * </ul>
    */
   private static void gerarAlertaManual() {
@@ -336,13 +361,10 @@ public class App {
     double riskLevel = Double.parseDouble(scanner.nextLine());
     System.out.print("Descrição do alerta: ");
     String description = scanner.nextLine();
-    ManualAlert alert = new ManualAlert(
-        Math.toIntExact(System.currentTimeMillis() % Integer.MAX_VALUE),
+    ManualAlert alert = area.generateAlert(
         riskLevel,
-        LocalDate.now(),
-        area,
-        description,
-        user);
-    alert.generateAlert();
+        user,
+        description);
+    alert.throwAlert(area);
   }
 }

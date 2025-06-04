@@ -29,9 +29,9 @@ public class ManualAlert extends Alert {
     private User createdBy;
     private String description;
 
-    public ManualAlert(int id, double riskLevel, LocalDate issueDate, MonitoredArea area, String description,
+    public ManualAlert(int id, double riskLevel, LocalDate issueDate, String description,
             User createdBy) {
-        super(id, riskLevel, issueDate, area);
+        super(id, riskLevel, issueDate);
         this.createdBy = createdBy;
     }
 
@@ -55,11 +55,8 @@ public class ManualAlert extends Alert {
      * @see Alert#generateAlert()
      */
     @Override
-    public void generateAlert() {
-        System.out.println("\n===== ALERTA MANUAL =====");
-        System.out.println("Área: " + getArea().getName());
-        System.out.println("Data do Alerta: " + getIssueDate());
-        System.out.printf("Nível de Risco: %.2f%%\n", getRiskLevel());
+    public void throwAlert(MonitoredArea area) {
+        super.throwAlert(area);
         System.out.println("Criado por: " + createdBy.getName() + " (ID: " + createdBy.getId() + ")");
         System.out.println("Descrição: " + description);
         System.out.println("=========================\n");

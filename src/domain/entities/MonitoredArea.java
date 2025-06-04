@@ -5,25 +5,31 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Representa uma área monitorada para riscos ambientais, como incêndios florestais.
+ * Representa uma área monitorada para riscos ambientais, como incêndios
+ * florestais.
  * <p>
- * Cada instância de {@code MonitoredArea} contém informações sobre a área, incluindo
- * identificador, nome, localização, tipo de vegetação, dados climáticos históricos e
+ * Cada instância de {@code MonitoredArea} contém informações sobre a área,
+ * incluindo
+ * identificador, nome, localização, tipo de vegetação, dados climáticos
+ * históricos e
  * registros de incêndios ocorridos.
  * <p>
- * Fornece métodos para calcular o nível de risco de incêndio com base nos dados climáticos
+ * Fornece métodos para calcular o nível de risco de incêndio com base nos dados
+ * climáticos
  * mais recentes ou fornecidos, além de gerenciar os dados associados à área.
  *
  * <ul>
- *   <li><b>id</b>: Identificador único da área monitorada.</li>
- *   <li><b>name</b>: Nome da área monitorada.</li>
- *   <li><b>location</b>: Localização geográfica da área.</li>
- *   <li><b>vegetationType</b>: Tipo de vegetação predominante na área.</li>
- *   <li><b>weatherDataList</b>: Lista de dados climáticos históricos associados à área.</li>
- *   <li><b>wildFires</b>: Lista de incêndios registrados na área.</li>
+ * <li><b>id</b>: Identificador único da área monitorada.</li>
+ * <li><b>name</b>: Nome da área monitorada.</li>
+ * <li><b>location</b>: Localização geográfica da área.</li>
+ * <li><b>vegetationType</b>: Tipo de vegetação predominante na área.</li>
+ * <li><b>weatherDataList</b>: Lista de dados climáticos históricos associados à
+ * área.</li>
+ * <li><b>wildFires</b>: Lista de incêndios registrados na área.</li>
  * </ul>
  *
  * <h2>Exemplo de uso:</h2>
+ * 
  * <pre>
  *     MonitoredArea area = new MonitoredArea(1, "Parque Nacional", "Latitude X, Longitude Y", "Cerrado");
  *     area.addWeatherData(new WheatherData(...));
@@ -36,8 +42,11 @@ public class MonitoredArea {
     private String name;
     private String location;
     private String vegetationType;
-    private List<WheatherData> weatherDataList = new ArrayList<>();
+    private List<WheatherData> weatherData = new ArrayList<>();
     private List<WildFire> wildFires = new ArrayList<>();
+    private List<Alert> alerts = new ArrayList<>();
+
+    /* ADICIONAR alerts list and sensor e implementar na main */
 
     public MonitoredArea(int id, String name, String location, String vegetationType) {
         this.id = id;
@@ -46,11 +55,12 @@ public class MonitoredArea {
         this.vegetationType = vegetationType;
     }
 
-
     /**
-     * Calcula o nível de risco da área monitorada com base nos dados climáticos mais recentes.
+     * Calcula o nível de risco da área monitorada com base nos dados climáticos
+     * mais recentes.
      * 
-     * @return o nível de risco calculado (0 a 100), ou -1 se não houver dados climáticos.
+     * @return o nível de risco calculado (0 a 100), ou -1 se não houver dados
+     *         climáticos.
      */
     public double calculateRiskLevel() {
         WheatherData wd = this.getLatestWeatherData();
@@ -63,10 +73,12 @@ public class MonitoredArea {
     }
 
     /**
-     * Calcula o nível de risco da área monitorada com base em um objeto WheatherData fornecido.
+     * Calcula o nível de risco da área monitorada com base em um objeto
+     * WheatherData fornecido.
      * 
      * @param data os dados climáticos a serem utilizados no cálculo.
-     * @return o nível de risco calculado (0 a 100), ou -1 se os dados forem inválidos.
+     * @return o nível de risco calculado (0 a 100), ou -1 se os dados forem
+     *         inválidos.
      */
     public double calculateRiskLevel(WheatherData data) {
         if (data == null) {
@@ -76,13 +88,15 @@ public class MonitoredArea {
         return calculateRiskLevel(data.getTemperature(), data.getHumidity(), data.getWindSpeed());
     }
 
-        /**
-     * Calcula o nível de risco da área monitorada com base nos valores de temperatura, umidade e velocidade do vento.
+    /**
+     * Calcula o nível de risco da área monitorada com base nos valores de
+     * temperatura, umidade e velocidade do vento.
      * 
      * @param temperature temperatura em graus Celsius.
-     * @param humidity umidade relativa do ar em porcentagem.
-     * @param windSpeed velocidade do vento em km/h.
-     * @return o nível de risco calculado (0 a 100), ou -1 se algum valor for inválido.
+     * @param humidity    umidade relativa do ar em porcentagem.
+     * @param windSpeed   velocidade do vento em km/h.
+     * @return o nível de risco calculado (0 a 100), ou -1 se algum valor for
+     *         inválido.
      */
     public double calculateRiskLevel(double temperature, double humidity, double windSpeed) {
         if (temperature < 0 || humidity < 0 || windSpeed < 0) {
@@ -96,22 +110,74 @@ public class MonitoredArea {
     }
 
     /**
-     * Recupera a entrada mais recente de {@link WheatherData} da lista {@code weatherDataList}.
+     * Recupera a entrada mais recente de {@link WheatherData} da lista
+     * {@code weatherDataList}.
      * <p>
-     * Este método busca na lista de dados climáticos associados a esta área monitorada
-     * e retorna a entrada com a data mais recente. Se a lista estiver vazia, retorna {@code null}.
+     * Este método busca na lista de dados climáticos associados a esta área
+     * monitorada
+     * e retorna a entrada com a data mais recente. Se a lista estiver vazia,
+     * retorna {@code null}.
      *
-     * @return o objeto {@link WheatherData} mais recente, ou {@code null} se não houver dados disponíveis
+     * @return o objeto {@link WheatherData} mais recente, ou {@code null} se não
+     *         houver dados disponíveis
      */
     public WheatherData getLatestWeatherData() {
-        return this.weatherDataList.stream()
+        return this.weatherData.stream()
                 .max(Comparator.comparing(WheatherData::getDate))
                 .orElse(null);
     }
 
+    /**
+     * Gera um alerta automático com base no nível de risco e nos dados climáticos fornecidos.
+     * <p>
+     * Se os dados climáticos forem {@code null}, o método exibe uma mensagem e retorna {@code null}.
+     * Caso contrário, cria um novo {@link AutomaticAlert}, adiciona à lista de alertas e o retorna.
+     * </p>
+     *
+     * @param riskLevel o nível de risco calculado para o alerta
+     * @param data os dados climáticos associados ao alerta; não pode ser {@code null}
+     * @return o {@link AutomaticAlert} gerado, ou {@code null} se os dados climáticos forem inválidos
+     */
+    public AutomaticAlert generateAlert(double riskLevel, WheatherData data) {
+        if (data == null) {
+            System.out.println("Dados climáticos inválidos para gerar alerta.");
+            return null;
+        }
+        AutomaticAlert alert = new AutomaticAlert(alerts.size() + 1, riskLevel, data.getDate(), data);
+        this.addAlert(alert);
+        return alert;
+    }
+
+    /**
+     * Gera um alerta manual para esta área monitorada com o nível de risco, usuário e descrição especificados.
+     * <p>
+     * Se o usuário fornecido for {@code null}, o método imprime uma mensagem de erro e retorna {@code null}.
+     * Caso contrário, cria um novo {@link ManualAlert}, adiciona à lista de alertas e retorna o alerta criado.
+     * </p>
+     *
+     * @param riskLevel   o nível de risco associado ao alerta
+     * @param user        o usuário responsável por gerar o alerta; não pode ser {@code null}
+     * @param description uma descrição do alerta
+     * @return o {@link ManualAlert} gerado, ou {@code null} se o usuário for inválido
+     */
+    public ManualAlert generateAlert(double riskLevel, User user, String description) {
+        if (user == null) {
+            System.out.println("Usuário inválido para gerar alerta.");
+            return null;
+        }
+        ManualAlert alert = new ManualAlert(alerts.size() + 1, riskLevel, java.time.LocalDate.now(), description, user);
+        this.addAlert(alert);
+        return alert;
+    }
+
+    private void addAlert(Alert alert) {
+        this.alerts.add(alert);
+    }
+
     public void addWildFire(WildFire wildFire) {
         this.wildFires.add(wildFire);
-        System.out.println("Wildfire reportado na área " + this.getName() + " na data " + wildFire.getDate() + " com severidade " + wildFire.getSeverity());
+        System.out.println("Wildfire reportado na área " + this.getName() + " na data " + wildFire.getDate()
+                + " com severidade " + wildFire.getSeverity());
     }
 
     public int getId() {
@@ -123,11 +189,11 @@ public class MonitoredArea {
     }
 
     public List<WheatherData> getWeatherDataList() {
-        return weatherDataList;
+        return weatherData;
     }
 
     public void addWeatherData(WheatherData data) {
-        weatherDataList.add(data);
+        weatherData.add(data);
     }
 
     public List<WildFire> getWildFires() {

@@ -19,29 +19,26 @@ public class AutomaticAlert extends Alert {
 
     private WheatherData generatedFrom;
 
-    public AutomaticAlert(int id, double riskLevel, LocalDate issueDate, MonitoredArea area,
+    public AutomaticAlert(int id, double riskLevel, LocalDate issueDate,
             WheatherData generatedFrom) {
-        super(id, riskLevel, issueDate, area);
+        super(id, riskLevel, issueDate);
         this.generatedFrom = generatedFrom;
     }
 
     /**
-     * Gera e exibe um alerta automático no console com informações detalhadas sobre a área,
+     * Exibe um alerta automático no console com informações detalhadas sobre a área,
      * data de emissão, nível de risco e dados climáticos utilizados para a geração do alerta.
      * Os dados exibidos incluem temperatura, umidade, velocidade do vento e o ID dos dados climáticos.
      * 
      * <p>
-     * Este método sobrescreve o método {@code generateAlert()} da superclasse implementada.
+     * Este método sobrescreve o método {@code throwAlert()} da superclasse Alert.
      * </p>
      * 
-     * @see Alert#generateAlert()
+     * @see Alert#throwAlert()
      */
     @Override
-    public void generateAlert() {
-        System.out.println("\n===== ALERTA AUTOMÁTICO =====");
-        System.out.println("Área: " + getArea().getName());
-        System.out.println("Data do Alerta: " + getIssueDate());
-        System.out.printf("Nível de Risco: %.2f%%\n", getRiskLevel());
+    public void throwAlert(MonitoredArea area) {
+        super.throwAlert(area);
         System.out.println("Dados Climáticos Utilizados:");
         System.out.printf("  Temperatura: %.2f°C\n", generatedFrom.getTemperature());
         System.out.printf("  Umidade: %.2f%%\n", generatedFrom.getHumidity());

@@ -21,20 +21,14 @@ public class Alert {
     private int id;
     private double riskLevel;
     private LocalDate issueDate;
-    private MonitoredArea area;
 
-    public Alert(int id, double riskLevel, LocalDate issueDate, MonitoredArea area) {
+    public Alert(int id, double riskLevel, LocalDate issueDate) {
         this.id = id;
         if (riskLevel < 0 || riskLevel > 100) {
             throw new IllegalArgumentException("Nível de risco deve estar entre 0 e 100.");
         }
         this.riskLevel = riskLevel;
         this.issueDate = issueDate;
-        this.area = area;
-    }
-
-    public MonitoredArea getArea() {
-        return area;
     }
 
     public LocalDate getIssueDate() {
@@ -49,8 +43,14 @@ public class Alert {
      * Gera e imprime uma mensagem de alerta na saída padrão.
      * A mensagem inclui o nome da área, nível de risco e data de emissão.
      */
-    public void generateAlert() {
-        System.out.println("ALERTA! área: " + area.getName() + ". risco de nível: " + riskLevel
-                + ". data: " + issueDate);
+    public void throwAlert(MonitoredArea area) {
+        if (area == null) {
+            throw new IllegalArgumentException("Área monitorada não pode ser nula.");
+        }
+        System.out.println("\n===== ALERTA =====");
+        System.out.println("Área: " + area.getName());
+        System.out.println("Data do Alerta: " + issueDate);
+        System.out.printf("Nível de Risco: %.2f%%\n", riskLevel);
+        System.out.println("===================");
     }
 }

@@ -15,15 +15,13 @@ public class WheatherData {
     private double humidity;
     private double windSpeed;
     private LocalDate date;
-    private MonitoredArea area;
 
-    public WheatherData(int id, double temperature, double humidity, double windSpeed, LocalDate date, MonitoredArea area) {
+    public WheatherData(int id, double temperature, double humidity, double windSpeed, LocalDate date) {
         this.id = id;
         this.temperature = temperature;
         this.humidity = humidity;
         this.windSpeed = windSpeed;
         this.date = date;
-        this.area = area;
     }
 
     public int getId() {
@@ -44,9 +42,5 @@ public class WheatherData {
 
     public LocalDate getDate() {
         return date;
-    }
-
-    public MonitoredArea getArea() {
-        return area;
     }
 }

@@ -26,11 +26,12 @@ public class App {
       System.out.println("\n--- Ignira ( " + user.getName() + " ) ---");
       System.out.println("1. Alterar usuário");
       System.out.println("2. Cadastrar área monitorada");
-      System.out.println("3. Inserir dados climáticos (WeatherData)");
-      System.out.println("4. Inserir reporte de incêndio (WildFire)");
-      System.out.println("5. Monitorar área (verificar risco e gerar alerta automático)");
-      System.out.println("6. Visualizar dados de uma área");
-      System.out.println("7. Gerar alerta manual");
+      System.out.println("3. Inserir dados climáticos do sensor");
+      System.out.println("4. Inserir dados climáticos manualmente (WeatherData)");
+      System.out.println("5. Inserir reporte de incêndio (WildFire)");
+      System.out.println("6. Monitorar área (verificar risco e gerar alerta automático)");
+      System.out.println("7. Visualizar dados de uma área");
+      System.out.println("8. Gerar alerta manual");
       System.out.println("0. Sair");
       System.out.print("Escolha uma opção: ");
       option = Integer.parseInt(scanner.nextLine());
@@ -43,18 +44,21 @@ public class App {
           cadastrarArea();
           break;
         case 3:
-          inserirWeatherData();
+          inserirSensorData();
           break;
         case 4:
-          inserirWildFire();
+          inserirWeatherData();
           break;
         case 5:
-          monitorarArea();
+          inserirWildFire();
           break;
         case 6:
-          visualizarArea();
+          monitorarArea();
           break;
         case 7:
+          visualizarArea();
+          break;
+        case 8:
           gerarAlertaManual();
           break;
         case 0:
@@ -148,6 +152,27 @@ public class App {
   }
 
   /**
+   * Solicita ao usuário que selecione uma área monitorada pelo seu ID e insira uma quantidade de dados de sensor (weather data) para essa área.
+   * Exibe a lista de áreas disponíveis, valida a seleção do usuário e, caso a área seja encontrada, solicita a quantidade de dados a ser inserida.
+   * Em seguida, utiliza o método {@code useSensor} da área selecionada para registrar a quantidade informada.
+   * Caso o ID informado não corresponda a nenhuma área, exibe uma mensagem de erro.
+   */
+  private static void inserirSensorData() {
+    System.out.println("Selecione a área monitorada (ID): ");
+    areas.forEach(a -> System.out.println(a.getName() + " (ID: " + a.getId() + ")"));
+    int areaId = Integer.parseInt(scanner.nextLine());
+    MonitoredArea area = areas.stream().filter(a -> a.getId() == areaId).findFirst().orElse(null);
+    if (area == null) {
+      System.out.println("Área não encontrada!");
+      return;
+    }
+    System.out.print("Digite a quantidade de weather data: ");
+    int quantity = Integer.parseInt(scanner.nextLine());
+    area.useSensor(quantity);
+
+  }
+
+  /**
    * Solicita ao usuário os dados climáticos (ID, temperatura, umidade, velocidade
    * do vento)
    * e a seleção de uma área monitorada pelo seu ID. Cria um novo objeto
@@ -161,15 +186,6 @@ public class App {
    * Utiliza o scanner para entrada de dados do usuário.
    */
   private static void inserirWeatherData() {
-    System.out.print("ID dos dados climáticos: ");
-    int id = Integer.parseInt(scanner.nextLine());
-    System.out.print("Temperatura: ");
-    double temp = Double.parseDouble(scanner.nextLine());
-    System.out.print("Umidade: ");
-    double hum = Double.parseDouble(scanner.nextLine());
-    System.out.print("Velocidade do vento: ");
-    double vento = Double.parseDouble(scanner.nextLine());
-    LocalDate data = LocalDate.now();
     System.out.println("Selecione a área monitorada (ID): ");
     areas.forEach(a -> System.out.println(a.getName() + " (ID: " + a.getId() + ")"));
     int areaId = Integer.parseInt(scanner.nextLine());
@@ -178,7 +194,14 @@ public class App {
       System.out.println("Área não encontrada!");
       return;
     }
-    WheatherData wd = new WheatherData(id, temp, hum, vento, data, area);
+    System.out.print("Temperatura: ");
+    double temp = Double.parseDouble(scanner.nextLine());
+    System.out.print("Umidade: ");
+    double hum = Double.parseDouble(scanner.nextLine());
+    System.out.print("Velocidade do vento: ");
+    double vento = Double.parseDouble(scanner.nextLine());
+    LocalDate data = LocalDate.now();
+    WheatherData wd = new WheatherData(area.getWeatherDataList().size() + 1, temp, hum, vento, data);
     area.addWeatherData(wd);
     System.out.println("Dados climáticos inseridos!");
   }
@@ -186,7 +209,7 @@ public class App {
   /**
    * Solicita ao usuário as informações necessárias para criar um novo incêndio
    * (WildFire),
-   * incluindo ID, data, gravidade e área monitorada. Em seguida, adiciona o
+   * incluindo data, gravidade e área monitorada. Em seguida, adiciona o
    * incêndio à área
    * selecionada, caso ela exista. Caso a área não seja encontrada, exibe uma
    * mensagem de erro.
@@ -198,12 +221,6 @@ public class App {
    * caso o ID da área seja válido.
    */
   private static void inserirWildFire() {
-    System.out.print("ID do incêndio: ");
-    int id = Integer.parseInt(scanner.nextLine());
-    System.out.print("Data do incêndio (YYYY-MM-DD): ");
-    LocalDate data = LocalDate.parse(scanner.nextLine());
-    System.out.print("Gravidade do incêndio (0-100): ");
-    int severity = Integer.parseInt(scanner.nextLine());
     System.out.println("Selecione a área monitorada (ID): ");
     areas.forEach(a -> System.out.println(a.getName() + " (ID: " + a.getId() + ")"));
     int areaId = Integer.parseInt(scanner.nextLine());
@@ -212,7 +229,11 @@ public class App {
       System.out.println("Área não encontrada!");
       return;
     }
-    WildFire wildFire = new WildFire(id, data, severity);
+    System.out.print("Data do incêndio (YYYY-MM-DD): ");
+    LocalDate data = LocalDate.parse(scanner.nextLine());
+    System.out.print("Gravidade do incêndio (0-100): ");
+    int severity = Integer.parseInt(scanner.nextLine());
+    WildFire wildFire = new WildFire(area.getWildFires().size() + 1, data, severity);
     area.addWildFire(wildFire);
   }
 

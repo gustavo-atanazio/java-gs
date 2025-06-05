@@ -19,7 +19,7 @@ import java.time.LocalDate;
  * </p>
  *
  * <p>
- * O método {@link #generateAlert()} exibe todas as informações relevantes do alerta manual
+ * O método {@link #throwAlert()} exibe todas as informações relevantes do alerta manual
  * de forma formatada na saída padrão.
  * </p>
  *
@@ -50,9 +50,9 @@ public class ManualAlert extends Alert {
      * A saída é formatada para melhor leitura.
      * 
      * <p>
-     * Este método sobrescreve o método {@code generateAlert()} da superclasse implementada.
+     * Este método sobrescreve o método {@code throwAlert()} da superclasse implementada.
      * </p>
-     * @see Alert#generateAlert()
+     * @see Alert#throwAlert()
      */
     @Override
     public void throwAlert(MonitoredArea area) {

@@ -23,9 +23,11 @@ import java.util.List;
  * <li><b>name</b>: Nome da área monitorada.</li>
  * <li><b>location</b>: Localização geográfica da área.</li>
  * <li><b>vegetationType</b>: Tipo de vegetação predominante na área.</li>
- * <li><b>weatherDataList</b>: Lista de dados climáticos históricos associados à
+ * <li><b>weatherDatas</b>: Lista de dados climáticos históricos associados à
  * área.</li>
  * <li><b>wildFires</b>: Lista de incêndios registrados na área.</li>
+ * <li><b>alerts</b>: Lista de alertas gerados para a área monitorada.</li>
+ * <li><b>sensor</b>: Sensor utilizado para coletar dados climáticos.</li>
  * </ul>
  *
  * <h2>Exemplo de uso:</h2>
@@ -42,17 +44,17 @@ public class MonitoredArea {
     private String name;
     private String location;
     private String vegetationType;
-    private List<WheatherData> weatherData = new ArrayList<>();
+    private List<WheatherData> weatherDatas = new ArrayList<>();
     private List<WildFire> wildFires = new ArrayList<>();
     private List<Alert> alerts = new ArrayList<>();
-
-    /* ADICIONAR alerts list and sensor e implementar na main */
+    private Sensor sensor;
 
     public MonitoredArea(int id, String name, String location, String vegetationType) {
         this.id = id;
         this.name = name;
         this.location = location;
         this.vegetationType = vegetationType;
+        this.sensor = new Sensor(id, "Sensor na área monitorada: " + name);
     }
 
     /**
@@ -68,7 +70,8 @@ public class MonitoredArea {
             System.out.println("Nenhum dado climático encontrado para a área selecionada!");
             return -1;
         }
-
+        System.out.println(wd.getDate() + " - Dados climáticos mais recentes coletados: "
+                + wd.getTemperature() + "°C, " + wd.getHumidity() + "%, " + wd.getWindSpeed() + " km/h");
         return calculateRiskLevel(wd.getTemperature(), wd.getHumidity(), wd.getWindSpeed());
     }
 
@@ -104,7 +107,7 @@ public class MonitoredArea {
             return -1;
         }
 
-        double riskLevel = (temperature * 0.4 + windSpeed * 0.3) - (humidity * 0.5);
+        double riskLevel = (temperature * 2) + (windSpeed * 2) - (humidity * 1.5);
         riskLevel = Math.max(0, Math.min(100, riskLevel));
         return riskLevel;
     }
@@ -122,8 +125,8 @@ public class MonitoredArea {
      *         houver dados disponíveis
      */
     public WheatherData getLatestWeatherData() {
-        return this.weatherData.stream()
-                .max(Comparator.comparing(WheatherData::getDate))
+        return this.weatherDatas.stream()
+                .max(Comparator.comparing(WheatherData::getId))
                 .orElse(null);
     }
 
@@ -170,6 +173,28 @@ public class MonitoredArea {
         return alert;
     }
 
+    /**
+     * Coleta dados climáticos do sensor um número especificado de vezes.
+     * Para cada coleta bem-sucedida, os dados são adicionados tanto à lista local
+     * quanto ao registro de dados climáticos da área monitorada.
+     *
+     * @param quantidade o número de vezes que os dados serão coletados do sensor
+     * @return uma lista de objetos {@link WheatherData} coletados nesta operação
+     */
+    public List<WheatherData> useSensor(int quantity){
+        List<WheatherData> collectedData = new ArrayList<>();
+        for (int i = 0; i < quantity; i++) {
+            int weatherId = weatherDatas.size() + 1;
+            WheatherData data = sensor.collectData(weatherId);
+            if (data != null) {
+                collectedData.add(data);
+                this.addWeatherData(data);
+            }
+        }
+        System.out.println(quantity + " dados climáticos inseridos com sucesso!");
+        return collectedData;
+    }
+
     private void addAlert(Alert alert) {
         this.alerts.add(alert);
     }
@@ -189,11 +214,11 @@ public class MonitoredArea {
     }
 
     public List<WheatherData> getWeatherDataList() {
-        return weatherData;
+        return weatherDatas;
     }
 
     public void addWeatherData(WheatherData data) {
-        weatherData.add(data);
+        weatherDatas.add(data);
     }
 
     public List<WildFire> getWildFires() {
